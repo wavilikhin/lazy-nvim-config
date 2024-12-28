@@ -11,6 +11,10 @@ return {
         end,
       },
       skip_confirm_for_simple_edits = true,
+      float = {
+        max_width = 70,
+        max_height = 20,
+      },
     },
     dependencies = { { "echasnovski/mini.icons", opts = {} } },
   },
