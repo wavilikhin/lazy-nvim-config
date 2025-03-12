@@ -32,10 +32,18 @@ keymap("n", "<C-a>", "gg<S-v>G", { desc = "Select all content" })
 -- If you want to add another shortcut, for example Command+S for macOS:
 keymap({ "i", "v", "n" }, "<D-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 
+-- Increment/decrement
+keymap("n", "+", "<C-a>")
+keymap("n", "-", "<C-x>")
+
+-- Resize window
+keymap("n", "<C-S-h>", "<C-w><")
+keymap("n", "<C-S-l>", "<C-w>>")
+keymap("n", "<C-S-k>", "<C-w>+")
+keymap("n", "<C-S-j>", "<C-w>-")
 --
 -- PLUGINS
 --
 -- oil
 --
-
 keymap("n", "-", "<CMD>Oil --float <CR>", { desc = "Open parent directory" })
