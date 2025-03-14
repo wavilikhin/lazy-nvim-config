@@ -47,13 +47,4 @@ return {
       return keys
     end,
   },
-  {
-    "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        -- Add liquid to the list of file types
-        liquid = { "prettier" },
-      },
-    },
-  },
 }
