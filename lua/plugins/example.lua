@@ -122,6 +122,7 @@ return {
       ensure_installed = {
         "bash",
         "html",
+        "emmet",
         "javascript",
         "json",
         "lua",

@@ -64,6 +64,7 @@ return {
     "snacks.nvim",
     opts = {
       scroll = { enabled = false },
+      terminal = {},
     },
     keys = {},
   },

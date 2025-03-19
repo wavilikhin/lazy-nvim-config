@@ -1,6 +1,10 @@
 return {
   {
     "neovim/nvim-lspconfig",
+    ---@class PluginLspOpts
+    opts = {
+      inlay_hints = { enabled = false },
+    },
     eslint = {
       on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = true
