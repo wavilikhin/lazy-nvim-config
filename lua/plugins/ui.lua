@@ -70,6 +70,48 @@ return {
   },
   {
     "folke/zen-mode.nvim",
-    opts = {},
+    lazy = false, -- Load immediately
+    config = function()
+      local zen_mode = require("zen-mode")
+
+      -- Global variable to store Zen Mode state
+      _G.zen_mode_enabled = false
+
+      zen_mode.setup({
+        -- your existing zen-mode configuration
+        on_open = function()
+          _G.zen_mode_enabled = true
+        end,
+        on_close = function()
+          _G.zen_mode_enabled = false
+        end,
+      })
+
+      -- Function to toggle Zen Mode and persist the state
+      _G.toggle_zen_mode = function()
+        if _G.zen_mode_enabled then
+          zen_mode.close()
+          _G.zen_mode_enabled = false
+        else
+          zen_mode.open()
+          _G.zen_mode_enabled = true
+        end
+      end
+
+      -- Autocommand to open Zen Mode when a buffer is created
+      vim.api.nvim_create_autocmd("BufWinEnter", {
+        callback = function()
+          if _G.zen_mode_enabled then
+            -- Check if oil is active, if not activate zen mode
+            if not vim.b.oil_active then
+              zen_mode.open()
+            end
+          end
+        end,
+      })
+
+      -- Keymap to toggle Zen Mode
+      vim.keymap.set("n", "<leader>z", _G.toggle_zen_mode, { desc = "Toggle Zen Mode" })
+    end,
   },
 }
