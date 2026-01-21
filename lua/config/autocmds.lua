@@ -20,7 +20,12 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Open Oil automatically when Neovim starts with a directory argument
 vim.api.nvim_create_autocmd("VimEnter", {
-  pattern = "*",
-  command = "enew",
+  callback = function()
+    local arg = vim.fn.argv(0)
+    if arg ~= "" and vim.fn.isdirectory(arg) == 1 then
+      require("oil").open(arg)
+    end
+  end,
 })

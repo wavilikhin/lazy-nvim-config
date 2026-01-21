@@ -16,6 +16,6 @@ return {
         max_height = 20,
       },
     },
-    dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    dependencies = { { "nvim-mini/mini.icons", opts = {} } },
   },
 }
