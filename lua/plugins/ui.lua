@@ -60,6 +60,39 @@ return {
       })
 
       opts.presets.lsp_doc_border = true
+
+      opts.popupmenu = opts.popupmenu or {}
+      opts.popupmenu.backend = "nui"
+
+      opts.lsp = vim.tbl_deep_extend("force", opts.lsp or {}, {
+        progress = { enabled = false },
+        hover = {
+          enabled = true,
+          silent = true,
+        },
+        signature = {
+          enabled = true,
+          auto_open = { enabled = true },
+        },
+        documentation = {
+          view = "hover",
+          opts = {
+            replace = true,
+            render = "plain",
+            format = { "{message}" },
+            win_options = {
+              wrap = true,
+              linebreak = true,
+              concealcursor = "n",
+              conceallevel = 3,
+              winblend = 0,
+            },
+          },
+        },
+      })
+
+      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#24201f" })
+      vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#7c6f64", bg = "#24201f" })
     end,
   },
   {
@@ -78,48 +111,53 @@ return {
   },
   {
     "folke/zen-mode.nvim",
-    lazy = false, -- Load immediately
+    lazy = false,
     config = function()
       local zen_mode = require("zen-mode")
 
-      -- Global variable to store Zen Mode state
-      _G.zen_mode_enabled = false
+      local zen_open = false
 
       zen_mode.setup({
-        -- your existing zen-mode configuration
         on_open = function()
-          _G.zen_mode_enabled = true
+          zen_open = true
         end,
         on_close = function()
-          _G.zen_mode_enabled = false
+          zen_open = false
         end,
+        window = {
+          backdrop = 0.95,
+          width = 120,
+          options = {},
+        },
+        plugins = {
+          options = {
+            enabled = true,
+            ruler = false,
+            showcmd = false,
+            laststatus = 0,
+          },
+        },
       })
 
-      -- Function to toggle Zen Mode and persist the state
-      _G.toggle_zen_mode = function()
-        if _G.zen_mode_enabled then
+      -- Toggle Zen Mode
+      local function toggle_zen_mode()
+        if zen_open then
           zen_mode.close()
-          _G.zen_mode_enabled = false
         else
           zen_mode.open()
-          _G.zen_mode_enabled = true
         end
       end
 
-      -- Autocommand to open Zen Mode when a buffer is created
-      vim.api.nvim_create_autocmd("BufWinEnter", {
-        callback = function()
-          if _G.zen_mode_enabled then
-            -- Check if oil is active, if not activate zen mode
-            if not vim.b.oil_active then
-              zen_mode.open()
-            end
-          end
-        end,
-      })
-
-      -- Keymap to toggle Zen Mode
-      vim.keymap.set("n", "<leader>z", _G.toggle_zen_mode, { desc = "Toggle Zen Mode" })
+      vim.keymap.set("n", "<leader>z", toggle_zen_mode, { desc = "Toggle Zen Mode" })
     end,
+  },
+  {
+    "projekt0n/github-nvim-theme",
+    lazy = true,
+    name = "github-theme",
+  },
+  {
+    "ellisonleao/gruvbox.nvim",
+    lazy = true,
   },
 }
